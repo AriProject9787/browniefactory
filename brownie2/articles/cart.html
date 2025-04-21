@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - BrownieFactory</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #f9f9f9;
+        }
+        header, footer {
+            background-color: #333;
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+        }
+        main {
+            padding: 2rem;
+        }
+        .cart-item {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .cart-item h3, .cart-item p {
+            margin: 0;
+        }
+        .cart-item button {
+            background-color: #f0a500;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .cart-item button:hover {
+            background-color: #c07800;
+        }
+        .total {
+            text-align: right;
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            font-weight: bold;
+        }
+        .back-btn {
+            margin-top: 2rem;
+            display: inline-block;
+            background-color: #555;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .back-btn:hover {
+            background-color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>BrownieFactory Cart</h1>
+</header>
+
+<main>
+    <div id="cart-items"></div>
+    <div class="total" id="cart-total">Total: $0</div>
+    <a href="index.html" class="back-btn">⬅️ Continue Shopping</a>
+</main>
+
+<footer>
+    &copy; 2025 BrownieFactory. All rights reserved.
+</footer>
+
+<script>
+    // Sample cart data
+    const cart = [
+        { name: 'Chocolate Brownie', price: 5, quantity: 2 },
+        { name: 'Nutella Brownie', price: 7, quantity: 1 },
+        { name: 'Walnut Brownie', price: 6, quantity: 3 }
+    ];
+
+    function updateCart() {
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartTotal = document.getElementById('cart-total');
+        cartItemsContainer.innerHTML = '';
+
+        let total = 0;
+
+        cart.forEach((item, index) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'cart-item';
+            itemDiv.innerHTML = `
+                <div>
+                    <h3>${item.name}</h3>
+                    <p>Price: $${item.price} × ${item.quantity}</p>
+                </div>
+                <button onclick="removeItem(${index})">Remove</button>
+            `;
+            cartItemsContainer.appendChild(itemDiv);
+
+            total += item.price * item.quantity;
+        });
+
+        cartTotal.textContent = `Total: $${total}`;
+    }
+
+    function removeItem(index) {
+        cart.splice(index, 1);
+        updateCart();
+    }
+
+    updateCart();
+</script>
+
+</body>
+</html>
