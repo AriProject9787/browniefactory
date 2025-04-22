@@ -62,11 +62,33 @@
             background-color: #777;
         }
     </style>
+    <link rel="stylesheet" href="style1.css">
+    <script src="theme-toggle.js" defer></script>
+    
 </head>
 <body>
 
 <header>
-    <h1>BrownieFactory Cart</h1>
+    
+    <div class="header-left">
+        
+        <div class="menu-toggle" id="menu-toggle">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <h2>BrownieFactory Cart</h2>
+    </div>
+    <nav>
+        <ul id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="cart.html">Cart</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="../index.html">Logout</a></li>
+            <button id="theme-toggle">🌙/☀️</button>
+        </ul>
+    </nav>
 </header>
 
 <main>
@@ -118,6 +140,15 @@
     }
 
     updateCart();
+</script>
+<script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+    
+
+    menuToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
 </script>
 
 </body>

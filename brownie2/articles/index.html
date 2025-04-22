@@ -1,223 +1,39 @@
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no ">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Brownie Factory.com</title>
+    
     <link rel="icon" type="image/png" href="https://scontent.fixm2-1.fna.fbcdn.net/v/t39.30808-1/302561134_489735319828332_3367225091466740962_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=105&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=C2wKsFxed-0Q7kNvwHgvSjH&_nc_oc=AdnBCbforzK3v_3SfEjkIFcj3PB19Aq9dAb9YIq4t4l_5K4n5MfOmeUw_GM5gqIl6pjWuQV0-cbu5M9-vsgLEasB&_nc_zt=24&_nc_ht=scontent.fixm2-1.fna&_nc_gid=efOZBAqdpb5tdjxqrQGgUw&oh=00_AfHWrAaIj8jZUtLjPQOC9CTb3dqOEqUNhELt9lQj8VKLQg&oe=680BD4A3">
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #f9f9f9;
-        }
-
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            flex-wrap: wrap;
-            position: relative;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-right: auto;
-        }
-
-        header h1 {
-            font-size: 1.8rem;
-        }
-
-        nav {
-            margin-left: 2rem;
-        }
-
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            margin-left: 30%;
-        }
-
-        .menu-toggle div {
-            width: 25px;
-            height: 3px;
-            background: white;
-            margin: 5px 0;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
-            transition: color 0.3s;
-        }
-
-        nav ul li a:hover {
-            color: #f0a500;
-        }
-
-        .hero {
-            background: url('https://source.unsplash.com/1600x500/?shopping,store') center/cover no-repeat;
-            height: 40vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-            text-shadow: 2px 2px 8px #000;
-            font-size: 1.5rem;
-            text-align: center;
-            padding: 1rem;
-        }
-
-        .products {
-            padding: 2rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-
-        .product-card {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            overflow: hidden;
-            transition: transform 0.3s;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .product-image img {
-            width: 80%;
-            height: 350px;
-            object-fit:fill;
-            margin-right: 10%;
-            margin-left: 10%;
-            margin-top: 5%;
-            
-
-        }
-
-        .product-details {
-            padding: 1rem;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .product-details h3 {
-            margin-bottom: 0.5rem;
-            font-size: 1.2rem;
-        }
-
-        .product-details p {
-            color: #555;
-            margin-bottom: 1rem;
-        }
-
-        footer {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 1rem;
-            margin-top: 2rem;
-        }
-
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-           
-
-            .menu-toggle {
-                display: flex;
-            }
-
-            nav {
-                width: 100%;
-                margin-left: 0;
-            }
-
-            nav ul {
-                flex-direction: column;
-                width: 100%;
-                display: none;
-            }
-
-            nav ul.active {
-                display: flex;
-            }
-
-            nav ul li {
-                width: 100%;
-                text-align: center;
-                padding: 10px 0;
-            }
-
-            .hero {
-                font-size: 1.5rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero {
-                font-size: 1.2rem;
-                height: 30vh;
-            }
-
-            .product-image img {
-                height: 150px;
-            }
-
-            .product-details h3 {
-                font-size: 1rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style1.css">
+    <script src="theme-toggle.js" defer></script>
 </head>
 <body>
     <header>
         <div class="header-left">
-            <h2>BrownieFactory</h2>
             <div class="menu-toggle" id="menu-toggle">
                 <div></div>
                 <div></div>
                 <div></div>
             </div>
+            <h2>BrownieFactory</h2>
+            
         </div>
         <nav>
             <ul id="nav-links">
-                
                 <li><a href="#">Home</a></li>
                 <li><a href="cart.html">Cart</a></li>
                 <li><a href="#">Contact</a></li>
                 <li><a href="profile.html">Profile</a></li>
                 <li><a href="../index.html">Logout</a></li>
+                <button id="theme-toggle">🌙/☀️</button>
             </ul>
         </nav>
     </header>
@@ -226,14 +42,11 @@
         <h2>Welcome to Brownie!</h2>
     </section>
 
-    <main class="products" id="product">
-        <!-- Dynamic product cards will load here -->
-    </main>
+    <main class="products" id="product"></main>
 
     <footer>
         <p>&copy; 2025 BrownieFactory. All rights reserved.</p>
     </footer>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -291,7 +104,6 @@
         fetchArticles();
 
     </script>
-
     <script>
         const menuToggle = document.getElementById('menu-toggle');
         const navLinks = document.getElementById('nav-links');
@@ -301,5 +113,7 @@
             navLinks.classList.toggle('active');
         });
     </script>
+    
+    
 </body>
 </html>
