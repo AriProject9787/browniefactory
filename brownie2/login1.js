@@ -83,7 +83,10 @@ signin.addEventListener("click",(e)=>{
             const user = userCredential.user;
             console.log(user.uid);
             console.log("successfully loggedin");
-            localStorage.setItem("UserId", user.uid);
+            sessionStorage.setItem("isLogin", "true");
+            sessionStorage.setItem("UserId", user.uid);
+            sessionStorage.setItem("Email", document.getElementById('emailL').value);
+        
             
             window.location.href = "articles/index.html"; // Redirect to home page after login
         })

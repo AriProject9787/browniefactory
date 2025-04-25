@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,7 +8,6 @@
     <style>
         /* [Same CSS as before] */
         body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fff0f5; color: #212529; }
-        header { background-color: #ff4081; padding: 1rem; color: white; text-align: center; font-size: 1.8rem; font-weight: bold; }
         main { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; padding: 2rem; max-width: 1200px; margin: 0 auto; background-color: white; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 8px; }
         .image-container, .info-container { flex: 1 1 300px; margin: 1rem; }
         .image-container img { width: 100%; height: auto; border-radius: 10px; }
@@ -39,7 +38,7 @@
                 <div></div>
                 <div></div>
             </div>
-            <h2>BrownieFactory</h2>
+            <h2>🍰 Cake Shop - Product Details</h2>
             
         </div>
         <nav>
@@ -53,7 +52,7 @@
             </ul>
         </nav>
         
-        🍰 Cake Shop - Product Details</header>
+        </header>
     <main id="product-detail">
         <div class="loading">Loading product details...</div>
     </main>
@@ -103,6 +102,7 @@
                                 <select id="weight">
                                     <option>500g</option>
                                     <option>1kg</option>
+                                    <option>1.5kg</option>
                                     <option>2kg</option>
                                 </select>
                             </div>
@@ -119,6 +119,7 @@
                             <button class="buy-now">Buy Now</button>
                             <button class="add-to-cart">Add to Cart</button>
                         </div>
+                        <div id="response"></div>
                     </div>
                 `;
 
@@ -126,7 +127,18 @@
                     const selectedFlavor = document.getElementById('flavor').value;
                     const selectedWeight = document.getElementById('weight').value;
                     const selectedShape = document.getElementById('shape').value;
-
+                    if (selectedWeight=="500g") {
+                        data.Price = 500;
+                    } else if (selectedWeight=="1kg") {
+                        data.Price = 1000;
+                    } else if (selectedWeight=="1.5kg") {
+                        data.Price = 1500;
+                    } else if (selectedWeight=="2kg") {
+                        data.Price = 2000;
+                    }
+                    else{
+                        data.Price = 0;
+                    }
                     const cartItem = {
                         title: title,
                         price: data.Price || '0.00',
@@ -144,12 +156,27 @@
                     const c = JSON.parse(localStorage.getItem('cart')) || [];
                     console.log(c);
 
+
+                    //localStorage.removeItem('cart');
+
+                    
+
+
+
+
+
+
+
+
+
                 });
 
-            } else {
+            }
+            else {
                 productDetail.innerHTML = '<div class="error">Product not found.</div>';
             }
-        }).catch((error) => {
+        })
+        .catch((error) => {
             console.error(error);
             productDetail.innerHTML = '<div class="error">Error loading product details. Please try again later.</div>';
         });
@@ -164,5 +191,12 @@
             navLinks.classList.toggle('active');
         });
     </script>
+    <script src="verify.js"></script>
+   
 </body>
-</html>
+</html> 
+
+
+
+
+

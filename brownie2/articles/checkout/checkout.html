@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+</head>
+<body>
+
+
+
+
+    <script>
+        const cond=sessionStorage.getItem("isAdmin");
+        if(cond=="true"){
+            console.log("you are logged in as admin");
+        }
+        else{
+            alert("You are not logged in as admin");
+            window.location.href = "../admin.html";
+        }
+    </script>
+    
+</body>
+</html>
