@@ -113,6 +113,7 @@ signup.addEventListener("click",(e)=>{
 
     auth.createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
+            sessionStorage.setItem("Number", document.getElementById('number').value);
             alert('Registration successful!');
             console.log('Registration successful!');
             window.location.href = "index.html"; // Redirect to login page after registration

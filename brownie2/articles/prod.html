@@ -45,7 +45,7 @@
             <ul id="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="cart.html">Cart</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="admin.html">Admin</a></li>
                 <li><a href="profile.html">Profile</a></li>
                 <li><a href="../index.html">Logout</a></li>
                 <button id="theme-toggle">🌙/☀️</button>
@@ -116,7 +116,7 @@
                             </div>
                         </div>
                         <div class="buttons">
-                            <button class="buy-now">Buy Now</button>
+                            <a href="index.html"><button class="buy-now">⬅️ Continue Shopping</button></a>
                             <button class="add-to-cart">Add to Cart</button>
                         </div>
                         <div id="response"></div>
@@ -180,6 +180,9 @@
             console.error(error);
             productDetail.innerHTML = '<div class="error">Error loading product details. Please try again later.</div>';
         });
+
+
+        
 
     </script>
     <script>

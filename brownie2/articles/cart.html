@@ -60,14 +60,24 @@
             font-size: 20px;
             color: #777;
         }
+        .checkout-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
 <header>
-    
     <div class="header-left">
-        
         <div class="menu-toggle" id="menu-toggle">
             <div></div>
             <div></div>
@@ -79,7 +89,7 @@
         <ul id="nav-links">
             <li><a href="index.html">Home</a></li>
             <li><a href="cart.html">Cart</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="admin.html">Admin</a></li>
             <li><a href="profile.html">Profile</a></li>
             <li><a href="../index.html">Logout</a></li>
             <button id="theme-toggle">🌙/☀️</button>
@@ -87,81 +97,192 @@
     </nav>
 </header>
 
+<div class="cart-container">
+    <h1>Your Shopping Cart</h1>
 
-    <div class="cart-container">
-        <h1>Your Shopping Cart</h1>
-
-        <div id="cart-items"></div>
-        
-        <div id="cart-empty" class="cart-empty" style="display: none;">
-            Your cart is empty.
-        </div>
-
-        <div id="cart-total" class="cart-total">
-            Total: $<span id="total-price">0.00</span>
-            <main>
-                
-                <a href="index.html" class="back-btn">⬅️ Continue Shopping</a>
-            </main>
-        </div>
+    <div id="cart-items"></div>
+    
+    <div id="cart-empty" class="cart-empty" style="display: none;">
+        Your cart is empty.
     </div>
 
+    <div id="cart-total" class="cart-total">
+        Total: ₹<span id="total-price">0.00</span>
+        <br>
+        <button id="checkout-button" class="checkout-btn">Checkout</button>
+        <br><br>
+        <main>
+            <a href="index.html" class="back-btn">⬅️ Continue Shopping</a>
+        </main>
+    </div>
+</div>
 
-<!-- display product -->
-<script>
-        // Function to calculate the total price
-        function calculateTotal(cart) {
-            let total = 0;
-            cart.forEach(item => {
-                total += parseFloat(item.price);
-            });
-            return total.toFixed(2);
+<!-- Upload checkout products -->
+<!-- <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAGYH0CeVCQDESjcJdvikoKmeOyhLCYoyk",
+        authDomain: "grand-lekage-web.firebaseapp.com",
+        projectId: "grand-lekage-web",
+        storageBucket: "grand-lekage-web.appspot.com",
+        messagingSenderId: "185245033432",
+        appId: "1:185245033432:web:258e597d6b2b7ad46f48ad",
+        measurementId: "G-B4GCWFR374"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    function uploadCheckout(date, uid, email, number, product, weight, price) {
+        set(ref(db, 'checkout/' + uid), {
+            datetime: date,
+            gmail: email,
+            product: product,
+            price: price,
+            weight: weight,
+            uid: uid,
+            number: number
+        });
+    }
+
+    document.getElementById('checkout-button').addEventListener('click', () => {
+        const date = new Date().toLocaleString();
+        const uid = sessionStorage.getItem('UserId');
+        const email = sessionStorage.getItem('Email');
+        const number = sessionStorage.getItem('number') || 'Not provided';
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        console.log("checkout is processing")
+
+        if (cart.length === 0) {
+            alert("Your cart is empty!");
+            return;
+        }
+        
+        cart.forEach(item => {
+            console.log("title="+item.title);
+            console.log("weight="+item.weight);
+            uploadCheckout(date, uid, email, number, item.title, item.weight, item.price);
+        });
+        uploadCheckout(date, uid, email, number, "blackforest", "500g", "500");
+
+        localStorage.removeItem('cart');
+        alert("Checkout successful!");
+        
+    });
+</script> -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAGYH0CeVCQDESjcJdvikoKmeOyhLCYoyk",
+        authDomain: "grand-lekage-web.firebaseapp.com",
+        projectId: "grand-lekage-web",
+        storageBucket: "grand-lekage-web.appspot.com",
+        messagingSenderId: "185245033432",
+        appId: "1:185245033432:web:258e597d6b2b7ad46f48ad",
+        measurementId: "G-B4GCWFR374"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    function uploadCheckout(date, uid, email, number, product, weight, price) {
+        const checkoutRef = ref(db, 'checkout/' + uid);
+        const newCheckoutRef = push(checkoutRef); // 🔥 push() generates a unique key
+        set(newCheckoutRef, {
+            datetime: date,
+            gmail: email,
+            product: product,
+            price: price,
+            weight: weight,
+            uid: uid,
+            number: number
+        });
+    }
+
+    document.getElementById('checkout-button').addEventListener('click', () => {
+        const date = new Date().toLocaleString();
+        const uid = sessionStorage.getItem('UserId');
+        const email = sessionStorage.getItem('Email');
+        const number = sessionStorage.getItem('number') || 'Not provided';
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        console.log("Checkout is processing...");
+
+        if (cart.length === 0) {
+            alert("Your cart is empty!");
+            return;
         }
 
-        // Function to display the cart items
-        function displayCart() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const cartItemsContainer = document.getElementById('cart-items');
-            const cartEmptyMessage = document.getElementById('cart-empty');
-            const totalPriceElement = document.getElementById('total-price');
+        cart.forEach(item => {
+            console.log("title=" + item.title);
+            console.log("weight=" + item.weight);
+            uploadCheckout(date, uid, email, number, item.title, item.weight, item.price);
+        });
 
-            if (cart.length === 0) {
-                cartItemsContainer.style.display = 'none';
-                cartEmptyMessage.style.display = 'block';
-                totalPriceElement.innerText = '0.00';
-            } else {
-                cartItemsContainer.style.display = 'block';
-                cartEmptyMessage.style.display = 'none';
-                totalPriceElement.innerText = calculateTotal(cart);
-
-                cartItemsContainer.innerHTML = ''; // Clear previous cart items
-                cart.forEach(item => {
-                    const itemElement = document.createElement('div');
-                    itemElement.classList.add('cart-item');
-                    itemElement.innerHTML = `
-                        <img src="${item.imgUrl}" alt="${item.title}">
-                        <div class="cart-item-details">
-                            <div class="cart-item-title">${item.title}</div>
-                            <div class="cart-item-price">$${item.price}</div>
-                            <div class="cart-item-flavor">Flavor: ${item.flavor}</div>
-                            <div class="cart-item-weight">Weight: ${item.weight}</div>
-                            <div class="cart-item-shape">Shape: ${item.shape}</div>
-                        </div>
-                    `;
-                    cartItemsContainer.appendChild(itemElement);
-                });
-            }
-        }
-
-        // Call the displayCart function when the page loads
-        window.onload = displayCart;
+       
+        
+        alert("Checkout successful!");
+         // redirect after checkout
+         localStorage.removeItem('cart');
+         //window.location.href = "checkout/payment.html";
+    });
 </script>
-<!-- theme script -->
+
+<!-- Display cart products -->
+<script>
+    function calculateTotal(cart) {
+        let total = 0;
+        cart.forEach(item => {
+            total += parseFloat(item.price);
+        });
+        return total.toFixed(2);
+    }
+
+    function displayCart() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartEmptyMessage = document.getElementById('cart-empty');
+        const totalPriceElement = document.getElementById('total-price');
+
+        if (cart.length === 0) {
+            cartItemsContainer.style.display = 'none';
+            cartEmptyMessage.style.display = 'block';
+            totalPriceElement.innerText = '0.00';
+        } else {
+            cartItemsContainer.style.display = 'block';
+            cartEmptyMessage.style.display = 'none';
+            totalPriceElement.innerText = calculateTotal(cart);
+
+            cartItemsContainer.innerHTML = '';
+            cart.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.classList.add('cart-item');
+                itemElement.innerHTML = `
+                    <img src="${item.imgUrl}" alt="${item.title}">
+                    <div class="cart-item-details">
+                        <div class="cart-item-title">${item.title}</div>
+                        <div class="cart-item-price">₹${item.price}</div>
+                        <div class="cart-item-flavor">Flavor: ${item.flavor}</div>
+                        <div class="cart-item-weight">Weight: ${item.weight}</div>
+                        <div class="cart-item-shape">Shape: ${item.shape}</div>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(itemElement);
+            });
+        }
+    }
+
+    window.onload = displayCart;
+</script>
+
+<!-- Theme script -->
 <script>
     const menuToggle = document.getElementById('menu-toggle');
     const navLinks = document.getElementById('nav-links');
     
-
     menuToggle.addEventListener('click', () => {
         navLinks.classList.toggle('active');
     });
