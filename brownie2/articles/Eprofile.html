@@ -152,8 +152,6 @@
                 <input type="text" id="street" placeholder="Street">
                 <input type="text" id="city" placeholder="City">
                 <input type="text" id="district" placeholder="District">
-                <input type="text" id="state" placeholder="State">
-                <input type="text" id="country" placeholder="Country">
                 <input type="number" id="pincode" placeholder="Pincode">
             </div>
         </div>
@@ -240,6 +238,14 @@
             var uid=sessionStorage.getItem("UserId");
         
             writeUserData(phonenumber,name,email,dob,password,uid,imgurl);
+            const address = {
+        street: document.getElementById('street').value.trim(),
+        city: document.getElementById('city').value.trim(),
+        district: document.getElementById('district').value.trim(),
+        pincode: document.getElementById('pincode').value.trim()
+    };
+
+    localStorage.setItem('address', JSON.stringify(address));
             window.location.href="profile.html";
            
 

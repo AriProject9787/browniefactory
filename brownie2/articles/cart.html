@@ -118,9 +118,9 @@
 </div>
 
 <!-- Upload checkout products -->
-<!-- <script type="module">
+ <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { getDatabase, ref, set,push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAGYH0CeVCQDESjcJdvikoKmeOyhLCYoyk",
@@ -135,15 +135,18 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    function uploadCheckout(date, uid, email, number, product, weight, price) {
-        set(ref(db, 'checkout/' + uid), {
+    function uploadCheckout(date, uid, email, number, product, weight, price,message) {
+        const checkoutRef = ref(db, 'checkout/' + uid);
+        const newCheckoutRef = push(checkoutRef); // 🔥 push() generates a unique key
+        set(newCheckoutRef, {
             datetime: date,
             gmail: email,
             product: product,
             price: price,
             weight: weight,
             uid: uid,
-            number: number
+            number: number,
+            message: message
         });
     }
 
@@ -163,74 +166,16 @@
         cart.forEach(item => {
             console.log("title="+item.title);
             console.log("weight="+item.weight);
-            uploadCheckout(date, uid, email, number, item.title, item.weight, item.price);
+            uploadCheckout(date, uid, email, number, item.title, item.weight, item.price,item.message);
         });
-        uploadCheckout(date, uid, email, number, "blackforest", "500g", "500");
+        //uploadCheckout(date, uid, email, number, "blackforest", "500g", "500","message");
 
         localStorage.removeItem('cart');
         alert("Checkout successful!");
         
     });
-</script> -->
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyAGYH0CeVCQDESjcJdvikoKmeOyhLCYoyk",
-        authDomain: "grand-lekage-web.firebaseapp.com",
-        projectId: "grand-lekage-web",
-        storageBucket: "grand-lekage-web.appspot.com",
-        messagingSenderId: "185245033432",
-        appId: "1:185245033432:web:258e597d6b2b7ad46f48ad",
-        measurementId: "G-B4GCWFR374"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    function uploadCheckout(date, uid, email, number, product, weight, price) {
-        const checkoutRef = ref(db, 'checkout/' + uid);
-        const newCheckoutRef = push(checkoutRef); // 🔥 push() generates a unique key
-        set(newCheckoutRef, {
-            datetime: date,
-            gmail: email,
-            product: product,
-            price: price,
-            weight: weight,
-            uid: uid,
-            number: number
-        });
-    }
-
-    document.getElementById('checkout-button').addEventListener('click', () => {
-        const date = new Date().toLocaleString();
-        const uid = sessionStorage.getItem('UserId');
-        const email = sessionStorage.getItem('Email');
-        const number = sessionStorage.getItem('number') || 'Not provided';
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        console.log("Checkout is processing...");
-
-        if (cart.length === 0) {
-            alert("Your cart is empty!");
-            return;
-        }
-
-        cart.forEach(item => {
-            console.log("title=" + item.title);
-            console.log("weight=" + item.weight);
-            uploadCheckout(date, uid, email, number, item.title, item.weight, item.price);
-        });
-
-       
-        
-        alert("Checkout successful!");
-         // redirect after checkout
-         localStorage.removeItem('cart');
-         //window.location.href = "checkout/payment.html";
-    });
 </script>
-
+ 
 <!-- Display cart products -->
 <script>
     function calculateTotal(cart) {
@@ -239,6 +184,13 @@
             total += parseFloat(item.price);
         });
         return total.toFixed(2);
+    }
+
+    function removeItem(index) {  // 🛠 NEW FUNCTION
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart.splice(index, 1); // Remove the item at this index
+        localStorage.setItem('cart', JSON.stringify(cart)); // Update localStorage
+        displayCart(); // Refresh the cart
     }
 
     function displayCart() {
@@ -257,7 +209,7 @@
             totalPriceElement.innerText = calculateTotal(cart);
 
             cartItemsContainer.innerHTML = '';
-            cart.forEach(item => {
+            cart.forEach((item, index) => {
                 const itemElement = document.createElement('div');
                 itemElement.classList.add('cart-item');
                 itemElement.innerHTML = `
@@ -265,9 +217,13 @@
                     <div class="cart-item-details">
                         <div class="cart-item-title">${item.title}</div>
                         <div class="cart-item-price">₹${item.price}</div>
-                        <div class="cart-item-flavor">Flavor: ${item.flavor}</div>
+                        <div class="cart-item-flavor">Preferences: ${item.flavor}</div>
+                        <div class="cart-item-flavor">Message on Cake: ${item.message}</div>
                         <div class="cart-item-weight">Weight: ${item.weight}</div>
                         <div class="cart-item-shape">Shape: ${item.shape}</div>
+                        <button onclick="removeItem(${index})" style="margin-top:10px;background-color:red;color:white;padding:5px 10px;border:none;border-radius:5px;cursor:pointer;">
+                            Remove
+                        </button> 
                     </div>
                 `;
                 cartItemsContainer.appendChild(itemElement);
@@ -288,6 +244,71 @@
     });
 </script>
 <script src="verify.js"></script>
+
+
+
+
+<!-- <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAGYH0CeVCQDESjcJdvikoKmeOyhLCYoyk",
+        authDomain: "grand-lekage-web.firebaseapp.com",
+        projectId: "grand-lekage-web",
+        storageBucket: "grand-lekage-web.appspot.com",
+        messagingSenderId: "185245033432",
+        appId: "1:185245033432:web:258e597d6b2b7ad46f48ad",
+        measurementId: "G-B4GCWFR374"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    function uploadCheckout(date, uid, email, number, product, weight, price,message) {
+        const checkoutRef = ref(db, 'checkout/' + uid);
+        const newCheckoutRef = push(checkoutRef); // 🔥 push() generates a unique key
+        set(newCheckoutRef, {
+            datetime: date,
+            gmail: email,
+            product: product,
+            price: price,
+            weight: weight,
+            uid: uid,
+            number: number,
+            message: message
+        });
+    }
+
+    document.getElementById('checkout-button').addEventListener('click', () => {
+        const date = new Date().toLocaleString();
+        const uid = sessionStorage.getItem('UserId');
+        const email = sessionStorage.getItem('Email');
+        const number = sessionStorage.getItem('number') || 'Not provided';
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        console.log("Checkout is processing...");
+
+        if (cart.length === 0) {
+            alert("Your cart is empty!");
+            return;
+        }
+
+        cart.forEach(item => {
+            console.log("title=" + item.title);
+            console.log("weight=" + item.weight);
+            uploadCheckout(date, uid, email, number, item.title, item.weight, item.price,item.message);
+        });
+
+       
+        
+        alert("Checkout successful!");
+         // redirect after checkout
+         localStorage.removeItem('cart');
+         //window.location.href = "checkout/payment.html";
+    });
+</script> -->
+
+
 
 </body>
 </html>

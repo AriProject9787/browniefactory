@@ -52,7 +52,9 @@ closeIcon.addEventListener('click',()=>{
     
 });
 
-
+window.onload = function() {   
+    wrapper.classList.add('active-popup');
+}
 
 
 //firebase code
