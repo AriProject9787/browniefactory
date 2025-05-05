@@ -35,53 +35,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-messaging-compat.js"></script>
 
-<!-- <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
-
-  // Your Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyAGYH0CeVCQDESjcJdvikoKmeOyhLCYoyk",
-    authDomain: "grand-lekage-web.firebaseapp.com",
-    projectId: "grand-lekage-web",
-    storageBucket: "grand-lekage-web.appspot.com",
-    messagingSenderId: "185245033432",
-    appId: "1:185245033432:web:258e597d6b2b7ad46f48ad",
-    measurementId: "G-B4GCWFR374"
-};
-
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-
-  // Initialize Messaging
-  const messaging = firebase.messaging();
-
-  // Request permission
-  Notification.requestPermission()
-  .then((permission) => {
-    if (permission === "granted") {
-      messaging.getToken({ vapidKey: 'BC1VW1hvXztVJJBbUQ8tq6Gc8YoFcyh-KIgagZyWO-c4W3Xi-fXDOJKqx8l3B_aryyUtJHFyZrgz2AGzxt4NcC4' })
-        .then((token) => {
-          console.log('FCM Token:', token);
-          // Send token to server or use it as needed
-        })
-        .catch((err) => {
-          console.error('FCM token error:', err);
-        });
-    } else {
-      console.warn('Notification permission denied');
-    }
-  });
-
-
-  // Handle foreground messages
-  messaging.onMessage((payload) => {
-    console.log('Message received. ', payload);
-    alert(payload.notification.title + ": " + payload.notification.body);
-  });
-</script> -->
-
-  
 
 </head>
 
@@ -180,52 +133,47 @@
 <footer>
   <p>Brownie Factory &copy; 2025 | Crafted for a sweeter tomorrow</p>
   <button id="notifyBtn">Enable Notifications</button>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getMessaging, getToken, onMessage, useServiceWorker } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
-
-const firebaseConfig = {
-    apiKey: "AIzaSyAGYH0CeVCQDESjcJdvikoKmeOyhLCYoyk",
-    authDomain: "grand-lekage-web.firebaseapp.com",
-    projectId: "grand-lekage-web",
-    storageBucket: "grand-lekage-web.appspot.com",
-    messagingSenderId: "185245033432",
-    appId: "1:185245033432:web:258e597d6b2b7ad46f48ad",
-    measurementId: "G-B4GCWFR374"
-};
-
-const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
-
-document.getElementById("notifyBtn").addEventListener("click", async () => {
-    try {
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+    import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-messaging.js";
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyAGYH0CeVCQDESjcJdvikoKmeOyhLCYoyk",
+      authDomain: "grand-lekage-web.firebaseapp.com",
+      projectId: "grand-lekage-web",
+      storageBucket: "grand-lekage-web.appspot.com",
+      messagingSenderId: "185245033432",
+      appId: "1:185245033432:web:258e597d6b2b7ad46f48ad",
+      measurementId: "G-B4GCWFR374"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const messaging = getMessaging(app);
+    
+    document.getElementById("notifyBtn").addEventListener("click", async () => {
+      try {
         const permission = await Notification.requestPermission();
         if (permission !== "granted") {
-            alert("Notification permission denied.");
-            return;
+          alert("Notification permission denied.");
+          return;
         }
-
-        const registration = await navigator.serviceWorker.register("/brownie2/firebase-messaging-sw.js", { scope: "/brownie2/" });
-        console.log("Service Worker registered with scope:", registration.scope);
-
-        useServiceWorker(messaging, registration); // Link FCM to your SW manually
-
+    
+        const registration = await navigator.serviceWorker.register('/brownie2/firebase-messaging-sw.js', { scope: '/brownie2/' });
+        console.log("Service Worker registered:", registration);
+    
         const token = await getToken(messaging, {
-            vapidKey: "BC1VW1hvXztVJJBbUQ8tq6Gc8YoFcyh-KIgagZyWO-c4W3Xi-fXDOJKqx8l3B_aryyUtJHFyZrgz2AGzxt4NcC4"
+          vapidKey: "BC1VW1hvXztVJJBbUQ8tq6Gc8YoFcyh-KIgagZyWO-c4W3Xi-fXDOJKqx8l3B_aryyUtJHFyZrgz2AGzxt4NcC4",
+          serviceWorkerRegistration: registration
         });
+    
+        console.log("FCM Token:", token);
+    
+      } catch (err) {
+        console.error("FCM error:", err);
+      }
+    });
+    </script>
 
-        if (token) {
-            console.log("FCM Token:", token);
-        } else {
-            console.warn("No token received. Ensure permission is granted.");
-        }
-
-    } catch (error) {
-        console.error("FCM error:", error);
-    }
-});
-</script>
 
 
 </footer>
