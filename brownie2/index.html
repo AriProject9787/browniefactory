@@ -35,7 +35,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-messaging-compat.js"></script>
 
-<script type="module">
+<!-- <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
 
@@ -79,7 +79,7 @@
     console.log('Message received. ', payload);
     alert(payload.notification.title + ": " + payload.notification.body);
   });
-</script>
+</script> -->
 
   
 
@@ -179,20 +179,54 @@
 
 <footer>
   <p>Brownie Factory &copy; 2025 | Crafted for a sweeter tomorrow</p>
-  <button id="enable-notifications">Enable Notifications</button>
+  <button id="notifyBtn">Enable Notifications</button>
 
-<script>
-document.getElementById("enable-notifications").addEventListener("click", async () => {
-    const permission = await Notification.requestPermission();
-    if (permission === "granted") {
-        console.log("Notification permission granted.");
-        // Initialize FCM and request token here
-        // ...
-    } else {
-        console.warn("Notification permission denied.");
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getMessaging, getToken, onMessage, useServiceWorker } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAGYH0CeVCQDESjcJdvikoKmeOyhLCYoyk",
+    authDomain: "grand-lekage-web.firebaseapp.com",
+    projectId: "grand-lekage-web",
+    storageBucket: "grand-lekage-web.appspot.com",
+    messagingSenderId: "185245033432",
+    appId: "1:185245033432:web:258e597d6b2b7ad46f48ad",
+    measurementId: "G-B4GCWFR374"
+};
+
+const app = initializeApp(firebaseConfig);
+const messaging = getMessaging(app);
+
+document.getElementById("notifyBtn").addEventListener("click", async () => {
+    try {
+        const permission = await Notification.requestPermission();
+        if (permission !== "granted") {
+            alert("Notification permission denied.");
+            return;
+        }
+
+        const registration = await navigator.serviceWorker.register("/brownie2/firebase-messaging-sw.js", { scope: "/brownie2/" });
+        console.log("Service Worker registered with scope:", registration.scope);
+
+        useServiceWorker(messaging, registration); // Link FCM to your SW manually
+
+        const token = await getToken(messaging, {
+            vapidKey: "BC1VW1hvXztVJJBbUQ8tq6Gc8YoFcyh-KIgagZyWO-c4W3Xi-fXDOJKqx8l3B_aryyUtJHFyZrgz2AGzxt4NcC4"
+        });
+
+        if (token) {
+            console.log("FCM Token:", token);
+        } else {
+            console.warn("No token received. Ensure permission is granted.");
+        }
+
+    } catch (error) {
+        console.error("FCM error:", error);
     }
 });
 </script>
+
 
 </footer>
 
