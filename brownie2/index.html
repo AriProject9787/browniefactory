@@ -3,6 +3,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,7 +21,70 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+
+  <!-- Google Analytics (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-23KNG61BZE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-23KNG61BZE');
+  </script>
+
+  <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-messaging-compat.js"></script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
+
+  // Your Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAGYH0CeVCQDESjcJdvikoKmeOyhLCYoyk",
+    authDomain: "grand-lekage-web.firebaseapp.com",
+    projectId: "grand-lekage-web",
+    storageBucket: "grand-lekage-web.appspot.com",
+    messagingSenderId: "185245033432",
+    appId: "1:185245033432:web:258e597d6b2b7ad46f48ad",
+    measurementId: "G-B4GCWFR374"
+};
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // Initialize Messaging
+  const messaging = firebase.messaging();
+
+  // Request permission
+  Notification.requestPermission()
+  .then((permission) => {
+    if (permission === "granted") {
+      messaging.getToken({ vapidKey: 'BC1VW1hvXztVJJBbUQ8tq6Gc8YoFcyh-KIgagZyWO-c4W3Xi-fXDOJKqx8l3B_aryyUtJHFyZrgz2AGzxt4NcC4' })
+        .then((token) => {
+          console.log('FCM Token:', token);
+          // Send token to server or use it as needed
+        })
+        .catch((err) => {
+          console.error('FCM token error:', err);
+        });
+    } else {
+      console.warn('Notification permission denied');
+    }
+  });
+
+
+  // Handle foreground messages
+  messaging.onMessage((payload) => {
+    console.log('Message received. ', payload);
+    alert(payload.notification.title + ": " + payload.notification.body);
+  });
+</script>
+
+  
+
 </head>
+
 <body>
 <header>
   <img src="images/logo.webp" alt="Brownie Logo" class="logo">
@@ -116,6 +180,23 @@
 <footer>
   <p>Brownie Factory &copy; 2025 | Crafted for a sweeter tomorrow</p>
 </footer>
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('firebase-messaging-sw.js')
+    .then((registration) => {
+      console.log('Service Worker registered with scope:', registration.scope);
+    })
+    .catch((err) => {
+      console.error('Service Worker registration failed:', err);
+    });
+}
+
+</script>
+
+
+
 
 </body>
 </html>
